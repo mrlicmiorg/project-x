@@ -20,7 +20,7 @@ jobs:
           
           echo "Triggering CircleCI for branch: $BRANCH_NAME"
           
-          RESPONSE=$(curl -X POST https://circleci.com/api/v2/project/gh/${{ github.repository }}/pipeline \
+          RESPONSE=$(curl -X POST https://circleci.com/api/v2/project/github/${{ github.repository }}/pipeline \
             -H "Content-Type: application/json" \
             -H "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
             -d "{ \"branch\": \"$BRANCH_NAME\" }")
