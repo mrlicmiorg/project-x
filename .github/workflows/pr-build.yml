@@ -1,0 +1,13 @@
+name: PR Build
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Add your build commands here"
+      - run: echo "Build completed for PR #${{ github.event.number }}"
