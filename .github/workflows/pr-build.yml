@@ -1,15 +1,26 @@
-name: Python PR Build
+name: Python CI
 
 on:
   pull_request:
     branches: [ main ]
+  merge_group:
+    types: [ checks_requested ]
 
 jobs:
-  build:
+  test:
+    name: Lint and Test
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
-          
-      - name: Build status
-        run: echo "Python build completed for PR #${{ github.event.number }}"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' # Change to your preferred version
+          cache: 'pip' # Speeds up subsequent runs
+
+      - name: Install dependencies
+        run: |
+          echo "Cao"
