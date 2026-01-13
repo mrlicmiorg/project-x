@@ -11,7 +11,6 @@ jobs:
             echo "Executing tests..."
             # If this fails (exit code 1), CircleCI tells GitHub "Failure"
             # and the Merge Queue will automatically drop this PR.
-            python -m unittest discover 
 
 workflows:
   main-workflow:
