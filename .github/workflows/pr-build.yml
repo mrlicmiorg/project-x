@@ -1,5 +1,4 @@
 name: Python CI
-
 on:
   pull_request:
     branches: [ main ]
@@ -7,14 +6,23 @@ on:
     types: [ checks_requested ]
 
 jobs:
-  test:
-    name: Lint and Test
+  trigger-circleci:
+    name: Signal CircleCI to Start
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Trigger CircleCI API
         run: |
-          echo "Cao"
+          # The Merge Queue creates a branch like 'gh-readonly-queue/main/pr-123-...'
+          BRANCH_NAME="${{ github.event.merge_group.head_ref || github.head_ref || github.ref_name }}"
+          
+          echo "Triggering CircleCI for branch: $BRANCH_NAME"
+          
+          RESPONSE=$(curl -X POST https://circleci.com/api/v2/project/gh/${{ github.repository }}/pipeline \
+            -H "Content-Type: application/json" \
+            -H "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
+            -d "{ \"branch\": \"$BRANCH_NAME\" }")
+          
+          echo "CircleCI Response: $RESPONSE"
