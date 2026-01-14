@@ -22,5 +22,5 @@ jobs:
       - name: Run slow CI (emulated by a long sleep)
         run: |
           echo "Running full build..."
-          sleep 120
+          sleep 90
           echo "Build complete"
