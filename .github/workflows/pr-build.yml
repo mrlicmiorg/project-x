@@ -19,6 +19,8 @@ jobs:
           #BRANCH_NAME="${{ github.event.merge_group.head_ref || github.head_ref || github.ref_name }}"
           
           echo "Triggering CircleCI for branch: $BRANCH_NAME"
+
+          sleep 120
           
           #RESPONSE=$(curl -X POST https://circleci.com/api/v2/project/github/${{ github.repository }}/pipeline \
           #  -H "Content-Type: application/json" \
