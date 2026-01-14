@@ -7,12 +7,20 @@ jobs:
   validate-pr:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Display info
-      run: | 
-        pwd
-        tree -a -I '.git'
-        git status
-    - name: Run slow CI (emulated by a long sleep)
-      run: sleep 120
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Ensure we are on the correct branch (merge queue branch)
+          ref: ${{ github.event.merge_group.base_sha }}
+
+      - name: Display info
+        run: |
+          pwd
+          tree -a -I '.git'
+          git status
+
+      - name: Run slow CI (emulated by a long sleep)
+        run: |
+          echo "Running full build..."
+          sleep 120
+          echo "Build complete"
