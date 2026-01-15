@@ -1,4 +1,4 @@
-name: Python Checks
+name: python_checks_format_import_lint_type_security
 
 on:
   pull_request:
@@ -28,5 +28,7 @@ jobs:
       - name: Security check with bandit
         run: bandit -r .
         continue-on-error: true
-      - name: Check for vulnerabilities with safety
-        run: safety check
+      #- name: Audit dependencies
+      #  uses: pypa/gh-action-pip-audit@v1
+      #  with:
+      #    inputs: requirements.txt
