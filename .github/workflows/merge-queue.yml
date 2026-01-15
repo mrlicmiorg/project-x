@@ -1,5 +1,5 @@
 name: Validate code in the merge queue
-
+#
 on:
   merge_group:
 
