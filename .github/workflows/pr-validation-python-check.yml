@@ -1,4 +1,4 @@
-name: Python Checks
+name: python_checks_format_import_lint_type_security
 
 on:
   pull_request:
@@ -29,4 +29,4 @@ jobs:
         run: bandit -r .
         continue-on-error: true
       - name: Check for vulnerabilities with safety
-        run: safety check
+        run: safety scan
