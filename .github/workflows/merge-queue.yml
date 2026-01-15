@@ -1,26 +1,35 @@
 name: Validate code in the merge queue
-#
+
 on:
   merge_group:
-#
+
 jobs:
   validate-pr:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Ensure we are on the correct branch (merge queue branch)
           ref: ${{ github.event.merge_group.base_sha }}
 
-      - name: Display info
+      - name: Show repo
         run: |
           pwd
           tree -a -I '.git'
-          git status
 
-      - name: Run slow CI (emulated by a long sleep)
+      - name: standing up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: dependencies 
         run: |
-          echo "Running full build..."
-          sleep 90
-          echo "Build complete"
+          cd super-duper-python-app
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: tests
+        run: |
+          cd super-duper-python-app
+          pytest -v
