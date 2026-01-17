@@ -4,11 +4,11 @@ on:
   merge_group:
 
 jobs:
-  validate-pr:
+  ci-job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # Ensure we are on the correct branch (merge queue branch)
           ref: ${{ github.event.merge_group.base_sha }}
@@ -22,5 +22,5 @@ jobs:
       - name: Run slow CI (emulated by a long sleep)
         run: |
           echo "Running full build..."
-          sleep 90
+          sleep 30
           echo "Build complete"
