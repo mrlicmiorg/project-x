@@ -42,7 +42,7 @@ jobs:
       - name: Security check with bandit
         run: bandit -r .
         continue-on-error: true
-      #- name: Audit dependencies 
+      #- name: Audit dependencies   
       #  uses: pypa/gh-action-pip-audit@v1   
       #  with:
       #    inputs: requirements.txt       
