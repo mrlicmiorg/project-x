@@ -8,7 +8,8 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
+    timeout-minutes: 7  # Prevents runaway jobs
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -17,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff black isort mypy bandit safety
+          pip install ruff black isort mypy bandit
       - name: Check formatting with black
         run: black --check .
       - name: Check import sorting with isort
@@ -26,6 +27,18 @@ jobs:
         run: ruff check .
       - name: Type check with mypy
         run: mypy .
+  security:
+    runs-on: ubuntu-slim
+    timeout-minutes: 7
+    steps:   
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black isort mypy bandit        
       - name: Security check with bandit
         run: bandit -r .
         continue-on-error: true
