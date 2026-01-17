@@ -1,19 +1,35 @@
-name: Validate pull request before putting into queue
+name: python_checks_format_import_lint_type_security
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - main
 
 jobs:
-  validate-pr:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run fast CI (e.g., linting, tests, etc.)
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Install dependencies
         run: |
-          echo "Running fast validation..."
-          sleep 5
-          echo "Fast validation complete"
+          python -m pip install --upgrade pip
+          pip install ruff black isort mypy bandit safety
+      - name: Check formatting with black
+        run: black --check .
+      - name: Check import sorting with isort
+        run: isort --check-only .
+      - name: Lint with ruff
+        run: ruff check .
+      - name: Type check with mypy
+        run: mypy .
+      - name: Security check with bandit
+        run: bandit -r .
+        continue-on-error: true
+      #- name: Audit dependencies
+      #  uses: pypa/gh-action-pip-audit@v1
+      #  with:
+      #    inputs: requirements.txt
