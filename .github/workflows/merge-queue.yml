@@ -6,20 +6,39 @@ on:
 jobs:
   ci-job:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          # Ensure we are on the correct branch (merge queue branch)
+          # Ensure we are on the correct merge queue branch
           ref: ${{ github.event.merge_group.base_sha }}
 
       - name: Display info
         run: |
           pwd
+          echo
           tree -a -I '.git'
+          echo
           git status
 
-      - name: Run slow CI (emulated by a long sleep)
+      - name: standup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: dependencies
+        run: |
+          cd super-duper-python-app
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: tests
+        run: |
+          cd super-duper-python-app
+          pytest -v
+
+      - name: long build sleep
         run: |
           echo "Running full build..."
           sleep 30
